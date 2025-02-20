@@ -1,27 +1,11 @@
-<template>
-  <img alt="Vue logo" src="./assets/logo.png">
-  <HelloWorldCopy msg="123123"/>
-</template>
 
-<script>
-//import HelloWorld from './components/HelloWorld.vue'
+<script setup lang="ts">
 import HelloWorldCopy from './components/HelloWorldCopy.vue';
-
-export default {
-  name: 'App',
-  components: {
-    HelloWorldCopy
-  }
-}
 </script>
 
+<template>
+  <HelloWorldCopy title="新版的HelloWorld" author="张三"/>
+</template>
+
 <style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
 </style>
