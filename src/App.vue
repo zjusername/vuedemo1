@@ -4,7 +4,7 @@ import MyCounter from './components/MyCounter.vue';
 </script>
 
 <template>
-  <MyCounter title="123" author="zj"/>
+  <MyCounter title="vue3 + vue ant design 开发 计算器" author="zj"/>
 </template>
 
 <style>

@@ -26,6 +26,11 @@ Customize configuration // 自定义配置
 + markdown 技术文档编写 
 
 ### 2025-02-20
-> 1 完成 ts 的环境开发 \
-> 2 完成 vue + ts语法 + ant design 的计算器开发  
+. 1 完成 ts 的环境开发 【已完成】 
+> 总结：环境有点复杂，相关问题笔记已记录在文档[Doc.md](Doc.md)
+
+\
+. 2 完成 vue  ts语法  ant design 的计算器开发 【完成50%】
+> 总结：今天只完成了界面的显示效果，界面上还可以重新调整布局或布局写法，但是不重要。明天要完成计算功能。 
+![alt text](bimg/jsq-1.png)
 

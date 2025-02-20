@@ -1,4 +1,3 @@
-<!--  手动显示导出组件，不写业务逻辑，使用组件时，显示组件名称为 HelloWorldCopy-->
 <script lang="ts">
 export default {
   name: 'MyCounter',
@@ -7,15 +6,10 @@ export default {
 
 <script setup lang="ts">
 
-// setup : vue3 的最佳实践语法
-// lang="ts" : 表示使用 ts 语法
-// setup 下无法使用 export default 来导出组件。
-// 默认 vue 会默认使用文件名作为导出组件的名称。但是在组件使用时，可能语法检查会爆红线提示
-// 可以新写一个script lang="ts" 来导出组件，不写业务逻辑，只写组件的名称，来显示导出组件。
-
-import { ref, defineProps } from 'vue';
-import { Button } from 'ant-design-vue';
+import { ref, defineProps, watch } from 'vue';
+import { Button,Input,Textarea } from 'ant-design-vue';
 import axios from 'axios';
+
 
 
 /**
@@ -30,86 +24,71 @@ interface Props {
   /**
    * 作者
    */
-   author?: string;  // ？表示非必需，可选属性
+  author?: string;  // ？表示非必需，可选属性
 }
 
 // 定义 props，在使用组件时可以传递参数
 defineProps<Props>();
 
-/**
- * 或者这么定义
- * defineProps<any>();
- * 或者
- * defineProps<{
- *  title: string;
- *  author?: string;
- * }>();
- */
+const activeKey = ref(['1']);
 
-// 创建一个响应式引用,等同于： const message = ref<string>("");  // 显式类型标注
-const message = ref(""); 
-const num1 = ref(0);
-const num2 = ref(0);
-const inputValue1 = ref("");
-const inputValue2 = ref("");
-const selectData = ref("1");
 
-// 方法定义
-// async 表示异步函数，await 表示等待异步函数执行完成
+//post
 const calc = async () => {
   try {
     const response = await axios.post("/calculator/calc", {
-      num1: inputValue1.value,
-      num2: inputValue2.value,
-      opt: selectData.value
+      num1: 0,
+      num2: 0,
+      opt: 1
     });
-    num2.value = response.data;
-    message.value += response.data + ",";
   } catch (error) {
     console.error('请求出错:', error);
   }
 };
 
-const add = async () => {
-  try {
-    const response = await axios.get('/calculator/add?num1=1&num2=1');
-    num1.value = response.data;
-    message.value += response.data + ",";
-  } catch (error) {
-    console.error('请求出错:', error);
-  }
-};
 
-const fetchData = () => {
-  message.value = "";
-  calc();
-  add();
-};
+
 </script>
 
-
-
 <template>
-  <p>界面标题：{{ title }} ，作者：{{ author }}</p>
-  <div>
-    输入第一个数字:<input v-model="inputValue1" type="text" placeholder="请输入内容">
+  <div style="padding: 20px 0;font-size: 14px;">界面标题：{{ title }} ，作者：{{ author }}</div>
+  <div style="width: 500px;">
+    <a-collapse v-model:activeKey="activeKey">
+      <a-collapse-panel key="1" header="计算器">
+        <div style="width:170px">
+          <div style="margin-bottom: 15px;padding: 5px 3px;border: 1px solid #f5f5f5;">
+            <Input placeholder="此处显示数字" readonly width="100%" />
+          </div>
+          <div>
+            <Button type="primary" shape="round">7</Button>
+            <a-button type="primary" shape="round" v-text="8" />
+            <a-button type="primary" shape="round" v-text="9" />
+            <a-button type="primary" shape="round" class="calc-opt">/</a-button>
+            <br />
+            <a-button type="primary" shape="round" v-text="4" />
+            <a-button type="primary" shape="round" v-text="5" />
+            <a-button type="primary" shape="round" v-text="6" />
+            <a-button type="primary" shape="round" class="calc-opt">*</a-button>
+            <br />
+            <a-button type="primary" shape="round" v-text="1" />
+            <a-button type="primary" shape="round" v-text="2" />
+            <a-button type="primary" shape="round" v-text="3" />
+            <a-button type="primary" shape="round" class="calc-opt">-</a-button>
+            <br />
+            <a-button type="primary" shape="round" v-text="0" />
+            <a-button type="primary" shape="round">.</a-button>
+            <a-button type="primary" shape="round" style="background-color: black;">=</a-button>
+            <a-button type="primary" shape="round" class="calc-opt">+</a-button>
+          </div>
+        </div>
 
-    <form action="" id="yunsuan">
-      <select name="" id="" v-model="selectData">
-        <option value="1">加</option>
-        <option value="2">减</option>
-      </select>
-    </form>
-
-    输入第二个数字:<input v-model="inputValue2" type="text" placeholder="请输入内容">
-    <p>你输入的内容是：{{ inputValue1 }} {{ inputValue2 }}</p>
-    <Button type="primary" @click="fetchData">确定</Button>
-    <p>结果：{{ num2 }}</p>
-
-    <p>getReturn: {{ num1 }}, PostReturn: {{ num2 }}</p>
-    <p>msg: {{ message }}</p>
+      </a-collapse-panel>
+    </a-collapse>
   </div>
 </template>
 
 <style scoped>
+.calc-opt {
+  background-color: mediumturquoise;
+}
 </style>
