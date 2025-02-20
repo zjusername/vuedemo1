@@ -1,37 +1,22 @@
 # my-vue-project
 
-## Project setup
+## 项目开始
 ```
-npm install
-```
+npm install // 安装项目依赖
 
-### Compiles and hot-reloads for development
-```
-npm run serve
-```
+npm run serve // 运行项目
 
-### Compiles and minifies for production
-```
-npm run build
-```
+npm run build // 打包项目
 
-### Lints and fixes files
-```
-npm run lint
+npm run lint // 检查项目
+
+Customize configuration // 自定义配置
+查看： https://cli.vuejs.org/config/
 ```
 
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
-
-
-
-
-
-
-
-
-## 开发清单
+## 开发计划
 
 ### 2025-02-20
 > 1 完成 ts 的环境开发 \
-> 2 完成 vue + ts语法 + ant design 的计算器开发
+> 2 完成 vue + ts语法 + ant design 的计算器开发  
+
