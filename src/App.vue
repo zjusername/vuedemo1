@@ -1,10 +1,10 @@
 
 <script setup lang="ts">
-import HelloWorldCopy from './components/HelloWorldCopy.vue';
+import CounterComponent from './components/CounterComponent.vue';
 </script>
 
 <template>
-  <HelloWorldCopy title="新版的HelloWorld" author="张三"/>
+  <CounterComponent title="123" author="zj"/>
 </template>
 
 <style>
