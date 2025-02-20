@@ -1,7 +1,7 @@
 <!--  手动显示导出组件，不写业务逻辑，使用组件时，显示组件名称为 HelloWorldCopy-->
 <script lang="ts">
 export default {
-  name: 'CounterComponent',
+  name: 'MyCounter',
 }
 </script>
 

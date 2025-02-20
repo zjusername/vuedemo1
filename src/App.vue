@@ -1,10 +1,10 @@
 
 <script setup lang="ts">
-import CounterComponent from './components/CounterComponent.vue';
+import MyCounter from './components/MyCounter.vue';
 </script>
 
 <template>
-  <CounterComponent title="123" author="zj"/>
+  <MyCounter title="123" author="zj"/>
 </template>
 
 <style>
