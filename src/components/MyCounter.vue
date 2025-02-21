@@ -10,6 +10,8 @@ import { ref, defineProps, watch } from 'vue';
 import { Button,Input,Textarea } from 'ant-design-vue';
 import axios from 'axios';
 
+import MyCounter2 from './MyCounter2.vue';
+
 
 
 /**
@@ -53,6 +55,7 @@ const app = (a:number)=>{
 
 <template>
   <div style="padding: 20px 0;font-size: 14px;">界面标题：{{ title }} ，作者：{{ author }}</div>
+  
   <div style="width: 500px;">
     <Collapse v-model:activeKey="activeKey">
       <Panel key="1" header="计算器">
@@ -87,6 +90,7 @@ const app = (a:number)=>{
       </Panel>
     </Collapse>
   </div>
+  <MyCounter2 title="计算器2" author="彭行松"></MyCounter2>
 </template>
 
 <style scoped>
