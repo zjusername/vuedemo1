@@ -34,3 +34,8 @@ Customize configuration // 自定义配置
 > 总结：今天只完成了界面的显示效果，界面上还可以重新调整布局或布局写法，但是不重要。明天要完成计算功能。 
 ![alt text](bimg/jsq-1.png)
 
+### 2025-02-21
+.1完成ant design的计算器开发
+出现bug：
+>ant design的折叠样式不显示
+https://github.com/zjusername/vuedemo1/issues/2
