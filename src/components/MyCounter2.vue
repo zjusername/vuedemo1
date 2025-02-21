@@ -66,7 +66,7 @@ const calcCalcText = ()=>{
 
 const calcResult = ()=>{
   //计算结果
-  alert("计算结果");
+  calcStepText.value = calcStepText.value + " = ??" 
 }
 
 </script>
