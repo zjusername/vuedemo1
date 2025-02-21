@@ -4,10 +4,9 @@ export default {
 }
 </script>
 
-<script setup lang="ts">
-
+<script setup lang="ts">  
 import { ref, defineProps, watch } from 'vue';
-import { Button,Input,Textarea } from 'ant-design-vue';
+import { Button,Input,Textarea,CollapsePanel,Collapse } from 'ant-design-vue';
 import axios from 'axios';
 
 import MyCounter2 from './MyCounter2.vue';
@@ -34,12 +33,15 @@ defineProps<Props>();
 
 const activeKey = ref(['1']);
 
+//创建响应式数据
+let inputValue =ref('')
 
-//post
+
+//post方法
 const calc = async () => {
   try {
     const response = await axios.post("/calculator/calc", {
-      num1: 0,
+      num1: inputValue.value,
       num2: 0,
       opt: 1
     });
@@ -47,10 +49,19 @@ const calc = async () => {
     console.error('请求出错:', error);
   }
 };
-const app = (a:number)=>{
-  alert(a)
+//接收计算器按钮的值，显示到Input
+const numberButton = (a:string)=>{
+  inputValue.value+=a
+  console.log(inputValue.value)
 }
-
+//清空input
+const clearDisplay=()=>{ 
+  inputValue.value=''
+}
+//按下加法按钮时，继续显示到文本框
+const jia = (b:string)=>{
+  inputValue.value+=b
+}
 </script>
 
 <template>
@@ -58,36 +69,37 @@ const app = (a:number)=>{
   
   <div style="width: 500px;">
     <Collapse v-model:activeKey="activeKey">
-      <Panel key="1" header="计算器">
+      <CollapsePanel key="1" header="计算器">
         <div style="width:170px">
           <div style="margin-bottom: 15px;padding: 5px 3px;border: 1px solid #f5f5f5;">
-            <Input placeholder="此处显示数字" readonly width="100%" />
+            <Input placeholder="此处显示数字" readonly  v-model:value="inputValue"/>
             
           </div>
           <div>
-            <Button type="primary" shape="round" @click="app(7)">7</Button>
-            <Button type="primary" shape="round" @click="app(8)" v-text="8" ></Button>
-            <Button type="primary" shape="round" @click="app(9)" v-text="9" ></Button>
+            <Button type="primary" shape="round" @click="clearDisplay">C</Button>
+            <Button type="primary" shape="round" @click="numberButton('7')">7</Button>
+            <Button type="primary" shape="round" @click="numberButton('8')" v-text="8" ></Button>
+            <Button type="primary" shape="round" @click="numberButton('9')" v-text="9" ></Button>
             <Button type="primary" shape="round" class="calc-opt">/</Button>
             <br />
-            <Button type="primary" shape="round" @click="app(4)" v-text="4" ></Button>
-            <Button type="primary" shape="round" @click="app(5)" v-text="5" ></Button>
-            <Button type="primary" shape="round" @click="app(6)" v-text="6" ></Button>
+            <Button type="primary" shape="round" @click="numberButton('4')" v-text="4" ></Button>
+            <Button type="primary" shape="round" @click="numberButton('5')" v-text="5" ></Button>
+            <Button type="primary" shape="round" @click="numberButton('6')" v-text="6" ></Button>
             <Button type="primary" shape="round" class="calc-opt">*</Button>
             <br />
-            <Button type="primary" shape="round" @click="app(1)" v-text="1" ></Button>
-            <Button type="primary" shape="round" @click="app(2)" v-text="2" ></Button>
-            <Button type="primary" shape="round" @click="app(3)" v-text="3" ></Button>
+            <Button type="primary" shape="round" @click="numberButton('1')" v-text="1" ></Button>
+            <Button type="primary" shape="round" @click="numberButton('2')" v-text="2" ></Button>
+            <Button type="primary" shape="round" @click="numberButton('3')" v-text="3" ></Button>
             <Button type="primary" shape="round" class="calc-opt">-</Button>
             <br />
-            <Button type="primary" shape="round" @click="app(0)" v-text="0" ></Button>
+            <Button type="primary" shape="round" @click="numberButton('0')" v-text="0" ></Button>
             <Button type="primary" shape="round">.</Button>
-            <Button type="primary" shape="round" style="background-color: black;">=</Button>
-            <Button type="primary" shape="round" class="calc-opt">+</Button>
+            <Button type="primary" shape="round" style="background-color: black;"  @click="calc()">=</Button>
+            <Button type="primary" shape="round" class="calc-opt" @click="jia('+')">+</Button>
           </div>
         </div>
 
-      </Panel>
+      </CollapsePanel>
     </Collapse>
   </div>
   <MyCounter2 title="计算器2" author="彭行松"></MyCounter2>

@@ -39,3 +39,9 @@ Customize configuration // 自定义配置
 出现bug：
 >ant design的折叠样式不显示
 https://github.com/zjusername/vuedemo1/issues/2
+ant design的input【已完成bug修复】
+无法更新inputValue.value的值【已完成bug修复】
+
+总结：今天只完成了，界面的显示效果，界面上的input可以使用，明天需要完成计算功能。
+
+### 2025-02-22
