@@ -34,59 +34,66 @@ defineProps<Props>();
 const activeKey = ref(['1']);
 
 //创建响应式数据
-const inputValue =ref('')
+const inputValue =ref('') //显示操作符
 const numberOne=ref<number|null>(null)
 const opt=ref('')
 const numberTow=ref<number|null>(null)
-
-//post方法，计算
-const calc = async () => {
-  numberTow.value=parseFloat(inputValue.value)
-  try {
-    const response = await axios.post("/calculator/calc", {
-      num1:numberOne.value,
-      num2: numberTow.value,
-      opt: opt.value
-    });
-    //重置状态
-    numberTow.value=0;
-    opt.value='0';
-    inputValue.value=response.data;//将返回的结果显示给input
-  } catch (error){
-    console.error('请求出错:', error);
-  }
-};
-
-
-//接收计算器按钮的值，显示到Input,如果值是0直接输入值，如果不是0就拼接前面的值
+const isCalculated=ref(false) //标记是否完成第一次运算
+const inputValueTemp=ref('')//记录第二个数值
+//ts计算
+const calc=()=>{
+  //获取第二个值
+numberTow.value=Number(inputValue.value)
+//计算
+numberOne.value=+numberTow.value
+//输出结果
+inputValue.value=numberOne.value.toString()
+}
+  //接收计算器按钮的值
 const numberButton = (number:number)=>{
-  if(inputValue.value==='0'){
+  //如果已经完成计算且没有新的运算符，清空input
+  if(isCalculated.value&&opt.value==""){
     inputValue.value=number.toString()
+    inputValueTemp.value=number.toString()
+    isCalculated.value=false
+  }
+//显示到Input,如果值是0直接输入值，如果不是0就拼接前面的值
+ else if(inputValue.value==='0'){
+    inputValue.value=number.toString()
+    inputValueTemp.value=number.toString()
   }else{
     inputValue.value+=number.toString()
+    inputValueTemp.value+=number.toString()
+    console.log(inputValue.value)
   }
-  // inputValue.value+=a
-  // console.log(inputValue.value)
 }
 //清空input
 const clearDisplay=()=>{ 
   inputValue.value=''
-  
+  inputValueTemp.value=''
 }
-//按下计算按钮,判断一个值是否为空，如果不是空，就把第一个值给firstNumber，如果是空就直接计算
+//按下计算按钮,判断一个值是否为空，如果不是空，就把第一个值给numberOne，如果是空就直接计算
 const  jisuan = (b:string)=>{
-  if (numberOne.value === null) {
-      numberOne.value = parseFloat(inputValue.value);//string转换float
-    } else {
+  if (numberOne.value!== null && opt.value!== '' &&!isCalculated.value) {
+      // 如果已经有第一值、运算符且未完成计算，先进行计算
       calc();
     }
-    opt.value = b;
-    inputValue.value = '0';//赋值第一个数完成后，清空inputValue
+  if (numberOne.value === null) {
+    //如果第一个值没有，就赋值给第一个值
+      numberOne.value = parseFloat(inputValue.value);//string转换float
+    }
+    opt.value = b;//赋值操作符
+    inputValue.value="";//赋值第一个数完成后，不清空inputValue
+    //opt为+时，opt等于1
+    //if(opt.value==="+")opt.value="1";
+    //记录一次isCalculated为false
+    isCalculated.value = false
 }
 //添加小数点
 const poInt =(decimal:string)=>{
   if(!inputValue.value.includes(decimal)){
     inputValue.value+=decimal;
+    inputValueTemp.value+=decimal;
   }
 }
 </script>
@@ -100,10 +107,9 @@ const poInt =(decimal:string)=>{
         <div style="width:170px">
           <div style="margin-bottom: 15px;padding: 5px 3px;border: 1px solid #f5f5f5;">
             <Input placeholder="此处显示数字" readonly  v-model:value="inputValue"/>
-            
+      
           </div>
           <div>
-            <Button type="primary" shape="round" @click="clearDisplay">C</Button>
             <Button type="primary" shape="round" @click="numberButton(7)">7</Button>
             <Button type="primary" shape="round" @click="numberButton(8)" v-text="8" ></Button>
             <Button type="primary" shape="round" @click="numberButton(9)" v-text="9" ></Button>
@@ -119,10 +125,14 @@ const poInt =(decimal:string)=>{
             <Button type="primary" shape="round" @click="numberButton(3)" v-text="3" ></Button>
             <Button type="primary" shape="round" class="calc-opt" @click="jisuan('2')">-</Button>
             <br />
+            <Button type="primary" shape="round" @click="clearDisplay">C</Button>
             <Button type="primary" shape="round" @click="numberButton(0)" v-text="0" ></Button>
             <Button type="primary" shape="round" @click="poInt('.')">.</Button>
-            <Button type="primary" shape="round" style="background-color: black;"  @click="calc()">=</Button>
-            <Button type="primary" shape="round" class="calc-opt" @click="jisuan('1')">+</Button>
+            <Button type="primary" shape="round" class="calc-opt" @click="jisuan('+')">+</Button>
+            <div style="width: 160px;margin-top: 3px;">
+              <Button type="primary" shape="round" style="background-color: black;"  @click="calc()" :block="true">=</Button>
+             
+            </div>
           </div>
         </div>
 

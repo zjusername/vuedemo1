@@ -55,3 +55,7 @@ ant design的input【已完成bug修复】
 计算完成之后在按等于符号，就累加后面就的值
 例如：
 1+1=2，在按等于符号后，就累加后面的值【已完成bug修复】
+bug2:
+更改全部显示数值后,计算1+2时等于2
+![alt text](bimg/bug-1+2等于2(2).png)
+![alt text](bimg/bug-1+2等于2.png)
