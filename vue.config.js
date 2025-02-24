@@ -27,7 +27,7 @@ module.exports = defineConfig({
         {
           test: /\.tsx?$/,     // 处理 .ts 和 .tsx 文件
           loader: 'ts-loader',  // 使用 ts-loader
-          exclude: /node_modules/,
+          exclude: /node_modules/,//npm
           options: {
             appendTsSuffixTo: [/\.vue$/]  // 给 .vue 文件添加 .ts 后缀
           }

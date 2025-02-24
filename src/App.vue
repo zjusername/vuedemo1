@@ -1,10 +1,10 @@
 
 <script setup lang="ts">
-import MyCounterType from './components/MyCounterType.vue';
+import HrontEndPorgraming from './components/HrontEndPorgraming.vue';
 </script>
 
 <template>
-  <MyCounterType title="vue3 + vue ant design 开发 计算器" author="zj"/>
+  <HrontEndPorgraming title="vue3 + vue ant design 开发 计算器" author="zj"/>
 </template>
 
 <style>
