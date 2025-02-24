@@ -71,7 +71,6 @@ const numberButton = (number:number)=>{
   }else{
     inputValue.value+=number.toString()
     inputValueTemp.value+=number.toString()
-    console.log(inputValue.value)
   }
 }
 //清空input
@@ -105,10 +104,13 @@ const  jisuan = (b:string)=>{
 }
 //添加小数点
 const poInt =(decimal:string)=>{
-  // 如果inputValue存在小数点就添加小数点
+  // 如果inputValue和inputValueTemp.value.includes(decimal)不存在小数点就添加小数点
   if(!inputValue.value.includes(decimal)){
     inputValue.value+=decimal;
+    
+  }else{
     inputValueTemp.value+=decimal;
+    inputValue.value+=decimal;//显示加小数点
   }
 }
 </script>
