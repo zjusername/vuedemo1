@@ -40,15 +40,22 @@ const opt=ref('')
 const numberTow=ref<number|null>(null)
 const isCalculated=ref(false) //标记是否完成第一次运算
 const inputValueTemp=ref('')//记录第二个数值
-//ts计算
-const calc=()=>{
-  //获取第二个值
-numberTow.value=Number(inputValue.value)
-//计算
-numberOne.value=+numberTow.value
-//输出结果
-inputValue.value=numberOne.value.toString()
-}
+//post
+const calc = async () => {
+  numberTow.value=Number(inputValueTemp.value)
+  try {
+    const response = await axios.post("/calculator/calc", {
+      num1: numberOne.value,
+      num2: numberTow.value,
+      opt: opt.value
+    });
+    inputValue.value = response.data;
+    //计算完成，重置加数
+    numberTow.value=0
+  } catch (error) {
+    console.error('请求出错:', error);
+  }
+};
   //接收计算器按钮的值
 const numberButton = (number:number)=>{
   //如果已经完成计算且没有新的运算符，清空input
@@ -83,14 +90,22 @@ const  jisuan = (b:string)=>{
       numberOne.value = parseFloat(inputValue.value);//string转换float
     }
     opt.value = b;//赋值操作符
-    inputValue.value="";//赋值第一个数完成后，不清空inputValue
+    inputValue.value+=b;//赋值第一个数完成后，不清空inputValue显示的值
+    inputValueTemp.value=" ";//但是inputValueTemp要清空，因为inputValue记录的是第二个值
     //opt为+时，opt等于1
-    //if(opt.value==="+")opt.value="1";
+    if(opt.value==="+"){
+    opt.value="1"
+  }else if(opt.value==='-'){
+    opt.value='2'
+  }else if(opt.value==='*'){
+    opt.value='3'
+  }
     //记录一次isCalculated为false
     isCalculated.value = false
 }
 //添加小数点
 const poInt =(decimal:string)=>{
+  // 如果inputValue存在小数点就添加小数点
   if(!inputValue.value.includes(decimal)){
     inputValue.value+=decimal;
     inputValueTemp.value+=decimal;
@@ -118,12 +133,12 @@ const poInt =(decimal:string)=>{
             <Button type="primary" shape="round" @click="numberButton(4)" v-text="4" ></Button>
             <Button type="primary" shape="round" @click="numberButton(5)" v-text="5" ></Button>
             <Button type="primary" shape="round" @click="numberButton(6)" v-text="6" ></Button>
-            <Button type="primary" shape="round" class="calc-opt">*</Button>
+            <Button type="primary" shape="round" class="calc-opt" @click="jisuan('*')">*</Button>
             <br />
             <Button type="primary" shape="round" @click="numberButton(1)" v-text="1" ></Button>
             <Button type="primary" shape="round" @click="numberButton(2)" v-text="2" ></Button>
             <Button type="primary" shape="round" @click="numberButton(3)" v-text="3" ></Button>
-            <Button type="primary" shape="round" class="calc-opt" @click="jisuan('2')">-</Button>
+            <Button type="primary" shape="round" class="calc-opt" @click="jisuan('-')">-</Button>
             <br />
             <Button type="primary" shape="round" @click="clearDisplay">C</Button>
             <Button type="primary" shape="round" @click="numberButton(0)" v-text="0" ></Button>
