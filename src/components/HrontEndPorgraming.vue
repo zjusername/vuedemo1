@@ -36,41 +36,67 @@ const inputValue2 = ref('')
 const numberOne = ref<number | null>(null)
 const numberLog = ref<boolean>(true)
 const reister = ref()//记录数值和操作符
-let log = true
+//js：string等式数组拆分
+function errBreak(e: string) {
+  const regex = /(\d+|[+\-*/])/g;
+  return e.match(regex) || [];
+}
 //ts计算
 //当前bug输入0数值使用运算符数值等于就会报错
 const calc = () => {
   inputValue2.value += inputValue.value + "="
-  numberOne.value = eval(reister.value)//eval计算
+  numberOne.value = eval(String(reister.value))//eval计算
+  console.log(reister.value)
   inputValue.value = String(numberOne.value)
 }
+
+let log = true
+reister.value=""//初始化
 //接收计算器按钮的值
 const numberButton = (number: string) => {
   //是否第一次计算，不是第一次计算，就为true否则为false
-  //为false就赋值第一个值，为false就赋值第二个值，并且清空第一个值的显示，在显示第二个值
+  //为ture就赋值第一个值，为false就赋值第二个值，并且清空第一个值的显示，在显示第二个值
   //当在次按加的时候，就进行计算
   if (numberLog.value) {
-    inputValue.value = number
-    reister.value = number
+    inputValue.value+= number
+    reister.value+= number
+    console.log(reister.value)
   } else {
-    inputValue.value += number
-    if (log) {//去掉显示的第一位数值，并且只运行一次
-      inputValue.value = inputValue.value.substring(1)
+    if (log) {//去掉显示框的第一位数值，并且只运行一次
+      inputValue.value = ""
       log = false
     }
+    inputValue.value += number
     reister.value += number
     console.log(reister.value)
   }
 }
-const jisuan = (opt: string) => {
-  //reister拆分数组，如果加号后面有数组，就运行等于，如果没有，就添加加号
-  let r=reister.value
 
+//运算符
+const jisuan = (opt: string) => {
+  let r
+  r = reister.value
+  r = errBreak(r)//等式拆分
+  //如果加号后面有数组，且不是第一次运行，就运行计算功能，如果没有，就添加加号
+  if (r[2] != " " && numberLog.value == false) {
+    //运算结果后，结果赋值给第二个显示框
+    inputValue2.value = eval(String(reister.value))
+    //然后在把结果赋值给第一个显示框
+    inputValue.value = inputValue2.value
+    //第二个显示框显示“运算符”
+    inputValue2.value += opt
+    //最终的结果也需要赋值“赋值最后的结果和运算符”
+    reister.value=inputValue.value
+    reister.value+= opt
+    log=true
+  } else {
     inputValue2.value += inputValue.value + opt
     numberLog.value = false
     reister.value += opt
+  }
 }
-//清空input
+
+//清空1、2显示框
 const clearDisplay = () => {
   inputValue.value = ''
   inputValue2.value = ''
@@ -90,35 +116,35 @@ const clearDisplay = () => {
             <p>{{ inputValue }}</p>
           </div>
           <div style="width: 420px;height: 450px;">
-            <Button @click="clearDisplay">%</Button>
-            <Button @click="clearDisplay">CE</Button>
-            <Button @click="clearDisplay">C</Button>
-            <Button @click="clearDisplay">⌫</Button>
+            <Button :disabled="true" class="ButtonNum" @click="clearDisplay">%</Button>
+            <Button :disabled="true" class="ButtonNum" @click="clearDisplay">CE</Button>
+            <Button class="ButtonNum" @click="clearDisplay">C</Button>
+            <Button :disabled="true" class="ButtonNum" @click="clearDisplay">⌫</Button>
             <br>
-            <Button @click="numberButton('')">⅟x</Button>
-            <Button @click="numberButton('')">x²</Button>
-            <Button @click="numberButton('')">2√x</Button>
-            <Button @click="jisuan('/')">÷</Button>
+            <Button :disabled="true" class="ButtonNum" @click="numberButton('')">⅟x</Button>
+            <Button :disabled="true" class="ButtonNum" @click="numberButton('')">x²</Button>
+            <Button :disabled="true" class="ButtonNum" @click="numberButton('')">2√x</Button>
+            <Button class="ButtonNum" @click="jisuan('/')">÷</Button>
             <br />
-            <Button @click="numberButton('7')">7</Button>
-            <Button @click="numberButton('8')">8</Button>
-            <Button @click="numberButton('9')">9</Button>
-            <Button @click="jisuan('*')">×</Button>
+            <Button class="ButtonNum" @click="numberButton('7')">7</Button>
+            <Button class="ButtonNum" @click="numberButton('8')">8</Button>
+            <Button class="ButtonNum" @click="numberButton('9')">9</Button>
+            <Button class="ButtonNum" @click="jisuan('*')">×</Button>
             <br />
-            <Button @click="numberButton('4')">4</Button>
-            <Button @click="numberButton('5')">5</Button>
-            <Button @click="numberButton('6')">6</Button>
-            <Button @click="jisuan('-')">-</Button>
+            <Button class="ButtonNum" @click="numberButton('4')">4</Button>
+            <Button class="ButtonNum" @click="numberButton('5')">5</Button>
+            <Button class="ButtonNum" @click="numberButton('6')">6</Button>
+            <Button class="ButtonNum" @click="jisuan('-')">-</Button>
             <br />
-            <Button @click="numberButton('1')">1</Button>
-            <Button @click="numberButton('2')">2</Button>
-            <Button @click="numberButton('3')">3</Button>
-            <Button @click="jisuan('+')">+</Button>
+            <Button class="ButtonNum" @click="numberButton('1')">1</Button>
+            <Button class="ButtonNum" @click="numberButton('2')">2</Button>
+            <Button class="ButtonNum" @click="numberButton('3')">3</Button>
+            <Button class="ButtonNum" @click="jisuan('+')">+</Button>
             <br />
-            <Button @click="numberButton('')">+/-</Button>
-            <Button @click="numberButton('0')">0</Button>
-            <Button @click="numberButton('.')">.</Button>
-            <Button type="primary" @click="calc()">═</Button>
+            <Button :disabled="true" class="ButtonNum" @click="numberButton('')">+/-</Button>
+            <Button class="ButtonNum" @click="numberButton('0')">0</Button>
+            <Button class="ButtonNum" @click="numberButton('.')">.</Button>
+            <Button class="ButtonNum" type="primary" @click="calc()">═</Button>
           </div>
         </div>
       </CollapsePanel>
@@ -146,7 +172,7 @@ p {
 }
 
 /* 按钮大小 */
-Button {
+.ButtonNum {
   margin: 2px 2px;
   width: 100px;
   height: 70px;
