@@ -69,3 +69,6 @@ bug2:
 ![alt text](bimg/bug-2.png)
 第二个值的显示第一个字符删不掉【未修复】
 ![alt text](bimg/bug-3.png)
+
+## 2025-02-24
+1.解决昨天未完成bug【已完成】
