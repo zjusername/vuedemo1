@@ -63,13 +63,17 @@ const numberButton = (number: string) => {
   }
 }
 const jisuan = (opt: string) => {
-  inputValue2.value += inputValue.value + opt
-  numberLog.value = false
-  reister.value += opt
+  //reister拆分数组，如果加号后面有数组，就运行等于，如果没有，就添加加号
+  let r=reister.value
+
+    inputValue2.value += inputValue.value + opt
+    numberLog.value = false
+    reister.value += opt
 }
 //清空input
 const clearDisplay = () => {
   inputValue.value = ''
+  inputValue2.value = ''
   reister.value = ''
 }
 </script>
