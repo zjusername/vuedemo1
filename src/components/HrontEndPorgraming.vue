@@ -7,9 +7,6 @@ export default {
 <script setup lang="ts">
 import { ref, defineProps, } from 'vue';
 import { Button, CollapsePanel, Collapse } from 'ant-design-vue';
-import axios from 'axios';
-import { configConsumerProps } from 'ant-design-vue/es/config-provider';
-
 /**
  * 使用ts 定义一个vue 的props 类型
  */
@@ -102,11 +99,16 @@ const clearDisplay = () => {
   inputValue2.value = ''
   reister.value = ''
 }
+//设计意图、程序设计逻辑加思维
+//编程思想
+//逻辑思维
+//设计、细化、组合、
+//vue：功能拆分、管理包npm、管理
+//文件名简写
 </script>
 
 <template>
   <!-- <div style="padding: 20px 0;font-size: 14px;">{{ title }} ，作者：{{ author }}</div> -->
-
   <div style="width: 450px; margin:20px auto;">
     <Collapse v-model:activeKey="activeKey">
       <CollapsePanel key="1" header="计算器  作者：zj">
@@ -169,8 +171,11 @@ p {
   margin-left: auto;
   font-size: 50px;
   text-align: right;
+  /* 文本溢出，定义宽度,隐藏超出元素宽度内容,防止文本换行 */
+  overflow: hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
 }
-
 /* 按钮大小 */
 .ButtonNum {
   margin: 2px 2px;
