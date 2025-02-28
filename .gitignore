@@ -15,10 +15,15 @@ pnpm-debug.log*
 
 # Editor directories and files
 .idea
-.vscode
 *.suo
 *.ntvs*
 *.njsproj
 *.sln
 *.sw?
 package-lock.json
+
+# 首先忽略整个 .vscode 文件夹
+.vscode/*
+
+# 然后取消忽略 launch.json
+!.vscode/launch.json
