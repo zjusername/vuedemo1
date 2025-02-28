@@ -6,46 +6,123 @@ export default {
 
 <script setup lang="ts">
 import { ref, defineProps, } from 'vue';
-import { Button, CollapsePanel, Collapse } from 'ant-design-vue';
+import { Button, CollapsePanel, Collapse, AutoCompleteOptGroup } from 'ant-design-vue';
+import { alertProps } from 'ant-design-vue/es/alert';
 const activeKey = ref(['1'])
 
 //两个显示
 const dispaly1 = ref("")
-const dispaly2 = ref("0")
+const optplay = ref("")
+const dispaly3 = ref("")
+const dispaly4 = ref("0")
 //两个数
 let n1: string = ''
 let n2: string = ''
+let opt: string = ''
+let n4: number//存储结果
 let opt1: boolean = true //记录是否遇到opt
+let opt4: string//上一次按下的opt
+let dengyu:string= "="//等于符号
 //c建
 function clearDisplay(): void {
-
+  dispaly1.value = ""
+  optplay.value = ""
+  dispaly3.value = ""
+  dispaly4.value = '0'
+  n1 = ""
+  n2 = ''
+  opt = ""
+  n4 = 0
+  opt1 = true
 }
 //数字输入建
 function numberButton(number: string): void {
   //如果没有opt就输入n1，如果有就输入n2
   if (opt1) {
-    n1 += number
-    dispaly2.value = n1
+    if(n1.length>11){
+      alert("数值上线")
+    }else{n1 += number
+      dispaly4.value = n1
+    }
+    
   } else {
+    if(n2.length>11){
+      alert("数值上线")
+    }else{
     n2 += number
-    dispaly2.value = n2
+    dispaly4.value = n2
+    opt4 = opt
+    }
   }
 }
 //运算符
-function jisuan(opt: string): void {//o按钮接收的计算符
-  n1 += opt//加号赋值n1
-  console.log(n1)
-  dispaly1.value = n1//显示给显示1
+
+function jisuan(opt3: string): void {//o按钮接收的计算符
+  optplay.value = ""
+  opt = ""
+  opt = opt3
+  dispaly1.value = n1
+  optplay.value = opt //显示给显示opt
+  if (n1 == "") {//显示3为0
+    n1 = "0"
+    dispaly1.value = "0"
+  }
+  if (n2 != "") {
+    dispaly3.value = n2
+    n4 = calc2(opt4)
+    dispaly4.value = n4.toString()
+    dispaly1.value = n4.toString()
+    n1 = n4.toString()
+    //计算完成显示完成清空n2和显示3
+    n2 = ""
+    dispaly3.value = ""
+  }
+  if(n4!=null){
+    dispaly1.value=n4.toString()
+    n1=n4.toString()
+    //清空n2与显示框3
+    n2=""
+    dispaly3.value=""
+  }
   opt1 = false
 }
 //结果
 function calc(): void {
-  n1 += n2//n1有opt，组合第二个数
-  dispaly2.value=eval(n1)//计算结果
-  dispaly1.value=n1//等式赋值给显示1
-  n1=eval(n1)//结果给n1
-  //同时清空n2
-  n2=""
+  if (n1 != "" && n2 != "") {
+    n4 = calc2(opt)
+    dispaly4.value = n4.toString()
+    dispaly3.value=n2
+    dispaly3.value+=dengyu
+    n2 = ""
+  } else {
+    alert("没有等式")
+  }
+}
+
+//计算
+function calc2(opt: string) {
+  let result: number = 0
+  switch (opt) {
+    case "+":
+      result = parseFloat(n1) + parseFloat(n2);
+      break;
+    case "-":
+      result = parseFloat(n1) - parseFloat(n2);
+      break;
+    case "*":
+      result = parseFloat(n1) * parseFloat(n2);
+      break;
+    case "÷":
+      if(n2=="0"){
+        result=0
+      }else{
+        result = parseFloat(n1) / parseFloat(n2);
+        result=Number(result.toFixed(2))
+      }
+      
+      break;
+  }
+  return result;
 }
 
 </script>
@@ -56,8 +133,8 @@ function calc(): void {
       <CollapsePanel key="1" header="计算器  作者：zj">
         <div>
           <div class="top">
-            <p>{{ dispaly1 }}</p>
-            <p>{{ dispaly2 }}</p>
+            <p>{{ dispaly1 }}{{ optplay }}{{ dispaly3 }}</p>
+            <p>{{ dispaly4 }}</p>
           </div>
           <div style="width: 420px;height: 450px;">
             <Button :disabled="true" class="ButtonNum" @click="clearDisplay">%</Button>
@@ -68,7 +145,7 @@ function calc(): void {
             <Button :disabled="true" class="ButtonNum" @click="numberButton('')">⅟x</Button>
             <Button :disabled="true" class="ButtonNum" @click="numberButton('')">x²</Button>
             <Button :disabled="true" class="ButtonNum" @click="numberButton('')">2√x</Button>
-            <Button class="ButtonNum" @click="jisuan('/')">÷</Button>
+            <Button class="ButtonNum" @click="jisuan('÷')">÷</Button>
             <br />
             <Button class="ButtonNum" @click="numberButton('7')">7</Button>
             <Button class="ButtonNum" @click="numberButton('8')">8</Button>
@@ -109,14 +186,16 @@ function calc(): void {
 
 p {
   height: 60px;
-  width: 300px;
+  width: 420px;
   margin-left: auto;
   font-size: 50px;
+  /* 文本靠左 */
   text-align: right;
   /* 文本溢出，定义宽度,隐藏超出元素宽度内容,防止文本换行 */
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+  border: 0px solid red;
 }
 
 /* 按钮大小 */
