@@ -69,4 +69,84 @@ state.inputValue = 'world'
 ```
 . 总结：在 script 中必须使用 .value，在模板中则不需要。这是 Vue 3 的设计决定，目的是为了保持响应式系统的一致性。
 
+## 设置Vue本地调试
+1 在 vue.config.js 中设置本地调试
+``` 
+ module.exports = defineConfig({
+  // 编译选项
+  transpileDependencies: true,  // 是否转译依赖包
+  productionSourceMap: true, //启用源码映射
+  // 开发服务器配置
+  devServer: {
+    proxy: {                   // 代理配置
+      '/calculator': {         // 代理路径
+        target: 'http://localhost:8080',  // 目标服务器
+        changeOrigin: true,    // 改变请求源
+        pathRewrite: {         // 路径重写规则
+          '^/calculator': '/calculator'
+        }
+      }
+    },
+    hot: true,                 // 热重载配置正确
+    open: true,                // 自动打开浏览器
+    port: 8080,                // 端口配置正确
+    https: false,              // HTTPS 配置正确
+  },
+  // Webpack 配置
+  configureWebpack: {
+    devtool: 'source-map',
+    output: {
+      devtoolModuleFilenameTemplate: 'webpack://[namespace]/[resource-path]?[loaders]'
+    },
+    resolve: { 
+      extensions: [".ts", ".tsx", ".js", ".json"]  // 支持的文件扩展名
+    },
+    module: {
+      rules: [
+        {
+          test: /\.tsx?$/,     // 处理 .ts 和 .tsx 文件
+          loader: 'ts-loader',  // 使用 ts-loader
+          exclude: /node_modules/,//npm
+          options: {
+            appendTsSuffixTo: [/\.vue$/]  // 给 .vue 文件添加 .ts 后缀
+          }
+        }
+      ]
+    }
+  },
+
+});
+```
+
+2 新增 launch.json 文件
+```
+//实测这个配置有用。
+
+"type": "msedge",          // 使用 Microsoft Edge 浏览器进行调试
+      "request": "launch",       // 启动新的浏览器实例进行调试
+      "name": "调试 Vue 应用",   // 在 VS Code 调试面板显示的名称
+      "url": "http://localhost:8080", // 要调试的应用地址
+      "webRoot": "${workspaceFolder}", // 项目根目录
+      "breakOnLoad": true,      // 允许在页面加载时命中断点
+      "sourceMapPathOverrides": {  // 源码映射路径重写规则
+        // 将 webpack 打包后的路径映射回本地源码路径
+        "webpack:///./*": "${webRoot}/*",
+        "webpack:///src/*": "${webRoot}/src/*",
+        "webpack:///*": "*",
+        "webpack:///./~/*": "${webRoot}/node_modules/*"
+      }
+```
+
+
+3 调试步骤：
+```
+. 关闭所有正在运行的 Vue 开发服务器
+. 删除 node_modules/.cache 文件夹
+. 重新运行 npm run serve
+. 完全关闭浏览器
+. 在 VS Code 中按 F5 启动调试 
+. 在代码行输入 debugger 或者 直接断点
+
+```
+
 
