@@ -3,7 +3,7 @@ const { defineConfig } = require('@vue/cli-service');
 module.exports = defineConfig({
   // 编译选项
   transpileDependencies: true,  // 是否转译依赖包
-
+  productionSourceMap: true, //启用源码映射
   // 开发服务器配置
   devServer: {
     proxy: {                   // 代理配置
@@ -14,11 +14,18 @@ module.exports = defineConfig({
           '^/calculator': '/calculator'
         }
       }
-    }
+    },
+    hot: true,                 // 热重载配置正确
+    open: false,                // 自动打开浏览器
+    port: 8080,                // 端口配置正确
+    https: false,              // HTTPS 配置正确
   },
-
   // Webpack 配置
   configureWebpack: {
+    devtool: 'source-map',
+    output: {
+      devtoolModuleFilenameTemplate: 'webpack://[namespace]/[resource-path]?[loaders]'
+    },
     resolve: { 
       extensions: [".ts", ".tsx", ".js", ".json"]  // 支持的文件扩展名
     },
@@ -34,7 +41,8 @@ module.exports = defineConfig({
         }
       ]
     }
-  }
+  },
+
 });
 
 /**
