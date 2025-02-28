@@ -22,7 +22,6 @@ let opt: string = ''
 let n4: number//存储结果
 let opt1: boolean = true //记录是否遇到opt
 let opt4: string//上一次按下的opt
-let dengyu:string= "="//等于符号
 //c建
 function clearDisplay(): void {
   dispaly1.value = ""
@@ -32,32 +31,47 @@ function clearDisplay(): void {
   n1 = ""
   n2 = ''
   opt = ""
-  n4 = 0
+  n4 = null
   opt1 = true
 }
 //数字输入建
 function numberButton(number: string): void {
   //如果没有opt就输入n1，如果有就输入n2
   if (opt1) {
-    if(n1.length>11){
+    if (n1.length > 11) {
       alert("数值上线")
-    }else{n1 += number
+    } else {
+      if(number === "." && n1.indexOf(number)>=0){
+        return;
+      }
+      n1 += number
       dispaly4.value = n1
+      // for (let char of n1) {
+      //   if (char == ".") {
+      //     alert("无法添加")
+      //   } else {
+      //     n1 += "."
+      //     dispaly4.value += "."
+      //   }
+      // }
     }
-    
+
   } else {
-    if(n2.length>11){
+    if (n2.length > 11) {
       alert("数值上线")
-    }else{
-    n2 += number
-    dispaly4.value = n2
-    opt4 = opt
+    } else {
+      if(number === "." && n2.indexOf(number)>=0){
+        return;
+      }
+      n2 += number
+      dispaly4.value = n2
+      opt4 = opt
     }
   }
 }
 //运算符
 
-function jisuan(opt3: string): void {//o按钮接收的计算符
+function jisuan(opt3: string): void {//按钮接收的计算符
   optplay.value = ""
   opt = ""
   opt = opt3
@@ -77,12 +91,12 @@ function jisuan(opt3: string): void {//o按钮接收的计算符
     n2 = ""
     dispaly3.value = ""
   }
-  if(n4!=null){
-    dispaly1.value=n4.toString()
-    n1=n4.toString()
+  if (n4 != null) {
+    dispaly1.value = n4.toString()
+    n1 = n4.toString()
     //清空n2与显示框3
-    n2=""
-    dispaly3.value=""
+    n2 = ""
+    dispaly3.value = ""
   }
   opt1 = false
 }
@@ -92,8 +106,7 @@ function calc(): void {
   if (n1 != "" && n2 != "") {
     n4 = calc2(opt)
     dispaly4.value = n4.toString()
-    dispaly3.value=n2
-    dispaly3.value+=dengyu
+    dispaly3.value = n2
     n2 = ""
   } else {
     alert("没有等式")
@@ -114,16 +127,16 @@ function calc2(opt: string) {
       result = parseFloat(n1) * parseFloat(n2);
       break;
     case "÷":
-      if(n2=="0"){
-        result=0
-      }else{
+      if (n2 == "0") {
+        result = 0
+      } else {
         result = parseFloat(n1) / parseFloat(n2);
-        result=Number(result.toFixed(2))
+        result = Number(result.toFixed(2))
       }
-      
+
       break;
   }
-  return result;
+  return result.toFixed(1);
 }
 
 </script>

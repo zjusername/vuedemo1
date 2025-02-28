@@ -5,7 +5,7 @@ import MyCounter33 from './components/MyCounter33.vue';
 </script>
 
 <template>
-  <MyCounter33 title="vue3 + vue ant design 开发 计算器" author="zj"/>
+  <ZjCounter title="vue3 + vue ant design 开发 计算器" author="zj"/>
 </template>
 
 <style>

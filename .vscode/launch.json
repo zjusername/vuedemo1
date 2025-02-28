@@ -5,7 +5,7 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "type": "msedge",          // 使用 Microsoft Edge 浏览器进行调试
+      "type": "chrome",          // 使用 Microsoft Edge 浏览器进行调试
       "request": "launch",       // 启动新的浏览器实例进行调试
       "name": "调试 Vue 应用",   // 在 VS Code 调试面板显示的名称
       "url": "http://localhost:8080", // 要调试的应用地址
