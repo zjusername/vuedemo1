@@ -1,7 +1,7 @@
 
 <script setup lang="ts">
 import ZjCounter from './components/ZjCounter.vue';
-import HrontEndPorgraming from './components/MyCounter33.vue';
+import MyCounter33 from './components/MyCounter33.vue';
 </script>
 
 <template>
