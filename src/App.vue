@@ -1,10 +1,10 @@
 
 <script setup lang="ts">
-import HrontEndPorgraming from './components/HrontEndPorgraming.vue';
+import ZjCounter from './components/ZjCounter.vue';
 </script>
 
 <template>
-  <HrontEndPorgraming title="vue3 + vue ant design 开发 计算器" author="zj"/>
+  <ZjCounter title="vue3 + vue ant design 开发 计算器" author="zj"/>
 </template>
 
 <style>
