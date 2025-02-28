@@ -49,7 +49,7 @@ const calc = () => {
 
 const clear = ()=>{
   opt.value = "";
-  num1.value = "0";
+  num1.value = "";
   num2.value = "";
   firstOpt.value= true;
   clearNum1.value =false;
