@@ -86,6 +86,7 @@ function jisuan(opt3: string): void {//o按钮接收的计算符
   }
   opt1 = false
 }
+
 //结果
 function calc(): void {
   if (n1 != "" && n2 != "") {
