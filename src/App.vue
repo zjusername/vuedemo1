@@ -1,6 +1,6 @@
 
 <script setup lang="ts">
-import HrontEndPorgraming from './components/HrontEndPorgraming.vue';
+import HrontEndPorgraming from './components/MyCounter33.vue';
 </script>
 
 <template>
