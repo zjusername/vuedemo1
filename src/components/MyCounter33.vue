@@ -30,9 +30,11 @@ const activeKey = ref(['1']);
 const num1 = ref("");
 const num2 = ref("");
 const opt = ref("");
+const calcOverMath = ref(""); // 公式
 
 const firstOpt = ref(true); //第一次操作计算按钮
 const clearNum1 = ref(false); //每次遇到opt后重新赋值num1
+const overCalc = ref(false);
 
 const enum optEnum {
   "加" = "+",
@@ -42,49 +44,61 @@ const enum optEnum {
 }
 
 const calc = () => {
+  let calcMath = num2.value + opt.value + num1.value + " = "; //构造计算公式显示
+  if(num1.value === "0"){
+    calcMath ="";  //去除 0 = 的字符。
+  }
   let result = jisuan();
   clear();
+  overCalc.value = true;
+  calcOverMath.value = calcMath;
   num1.value = result.toString();
 }
 
-const clear = ()=>{
+const clear = () => {
   opt.value = "";
   num1.value = "";
   num2.value = "";
-  firstOpt.value= true;
-  clearNum1.value =false;
+  firstOpt.value = true;
+  clearNum1.value = false;
+  overCalc.value = false;
+  calcOverMath.value = ""
 }
 
 
 //接收计算器按钮的值
 const numberButton = (number: string) => {
-  if(clearNum1.value){
+  if (clearNum1.value) {
     num1.value = number;
-  }else{
+    clearNum1.value = false;
+  } else {
     num1.value += number;
   }
+  num1.value =  parseFloat(num1.value).toString(); //做一次数据转换，去掉首位0字符
 }
 
-const print = () => {
-  console.log("opt=" + opt.value 
-  + "num1=" + num1.value 
-  //+ ",num1Show=" + num1Show.value 
-  + ",num2=" + num2.value 
-//  + ",num2Show=" + num2Show.value
-)
+//打印
+const print = (title:string) => {
+  console.log(title +",opt=" + opt.value
+    + ",num1=" + num1.value
+    + ",num2=" + num2.value
+  )
 }
 
 
 const optBtn = (optStr: string) => {
   opt.value = optStr;
-  if(firstOpt.value){
-    num2.value =  num1.value 
+  print("计算前");
+  overCalc.value = false;
+  if (firstOpt.value) {
+    num2.value = num1.value
     firstOpt.value = false;
-  }else{
-    let res =  jisuan();
-    num2.value =  res.toString();
+  } else {
+    let res = jisuan();
+    num2.value = res.toString();
   }
-  clearNum1.value=true;
+  clearNum1.value = true;
+  print("计算后");
 }
 
 //运算符
@@ -92,22 +106,22 @@ const jisuan = (): number => {
   let result = 0;
   let n1 = parseFloat(num1.value);
   let n2 = parseFloat(num2.value);
-  
+
   switch (opt.value) {
     case optEnum.加:
       result = n1 + n2;
       break
     case optEnum.减:
-      result = n1 - n2;
+      result = n2 - n1; //注意此处顺序
       break
     case optEnum.乘:
       result = n1 * n2;
       break
     case optEnum.除:
-      if(n2==0){
+      if (n1 == 0) {
         result = 0;
-      }else{
-        result = n1 / n2;
+      } else {
+        result = n2 / n1;//注意此处顺序
       }
       break;
   }
@@ -126,7 +140,7 @@ const clearDisplay = () => {
       <CollapsePanel key="1" :header='(title + " " + author)'>
         <div>
           <div class="top">
-            <p>{{ num2 }} {{ opt }}</p>
+            <p>{{ overCalc ? calcOverMath : num2 + " " + opt }}</p>
             <p>{{ num1 }}</p>
           </div>
           <div style="width: 420px;height: 450px;">
