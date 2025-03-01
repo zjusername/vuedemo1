@@ -19,7 +19,7 @@ const dispaly4 = ref("0")
 let n1: string = ''
 let n2: string = ''
 let opt: string = ''
-let n4: number//存储结果
+let n4: string//存储结果
 let opt1: boolean = true //记录是否遇到opt
 let opt4: string//上一次按下的opt
 //c建
@@ -31,7 +31,7 @@ function clearDisplay(): void {
   n1 = ""
   n2 = ''
   opt = ""
-  n4 = null
+  n4 = ""
   opt1 = true
 }
 //数字输入建
@@ -46,16 +46,7 @@ function numberButton(number: string): void {
       }
       n1 += number
       dispaly4.value = n1
-      // for (let char of n1) {
-      //   if (char == ".") {
-      //     alert("无法添加")
-      //   } else {
-      //     n1 += "."
-      //     dispaly4.value += "."
-      //   }
-      // }
     }
-
   } else {
     if (n2.length > 11) {
       alert("数值上线")
@@ -69,18 +60,20 @@ function numberButton(number: string): void {
     }
   }
 }
-//运算符
 
+//运算符
 function jisuan(opt3: string): void {//按钮接收的计算符
   optplay.value = ""
   opt = ""
   opt = opt3
   dispaly1.value = n1
   optplay.value = opt //显示给显示opt
-  if (n1 == "") {//显示3为0
+  //不输入默认为零
+  if (n1 == "") {
     n1 = "0"
     dispaly1.value = "0"
   }
+  //实现连加功能
   if (n2 != "") {
     dispaly3.value = n2
     n4 = calc2(opt4)
@@ -91,6 +84,7 @@ function jisuan(opt3: string): void {//按钮接收的计算符
     n2 = ""
     dispaly3.value = ""
   }
+//没有按下等于时，把结果给到第一位
   if (n4 != null) {
     dispaly1.value = n4.toString()
     n1 = n4.toString()
@@ -98,10 +92,11 @@ function jisuan(opt3: string): void {//按钮接收的计算符
     n2 = ""
     dispaly3.value = ""
   }
+  //记录opt
   opt1 = false
 }
 
-//结果
+//等于
 function calc(): void {
   if (n1 != "" && n2 != "") {
     n4 = calc2(opt)
@@ -136,7 +131,7 @@ function calc2(opt: string) {
 
       break;
   }
-  return result.toFixed(1);
+  return result.toFixed(0);
 }
 
 </script>
