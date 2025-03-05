@@ -3,7 +3,7 @@ const mysql=require('mysql2');
 const connection =mysql.createConnection({
     host:'localhost',//地址
     user:'root',//用户名
-    password:'2628088247zj',//密码
+    password:'*********',//密码
     database:'demo',//连接库名
     port:3306//端口
 }); 
